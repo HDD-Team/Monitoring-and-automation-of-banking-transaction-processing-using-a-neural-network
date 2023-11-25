@@ -4,7 +4,8 @@ import pandas as pd
 model = joblib.load('model.pkl')
 scaler = joblib.load('scaler.pkl')
 # Load the new dataset
-new_data = pd.read_excel('fraud_dataset_1.xlsx')
+new_data = pd.read_excel('test_data.xlsx')
+new_data.rename(columns={' ': 'numbers'}, inplace=True)
 
 # Extract the features from the new dataset
 a = {'es_transportation': 1, 'es_health': 2, 'es_otherservices': 3, 'es_food': 4, 'es_hotelservices': 5,
