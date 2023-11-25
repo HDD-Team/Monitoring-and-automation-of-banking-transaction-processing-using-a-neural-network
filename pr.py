@@ -17,7 +17,7 @@ new_data['customer'] = new_data['customer'].str[1:]
 new_data['merchant'] = new_data['merchant'].str[1:]
 
 new_X = new_data.drop(['age', 'gender'], axis=1)
-new_X = new_X.to_numpy()[:, (1, 2, 4, 6, 7)]
+new_X = new_X.to_numpy()[:, (2, 3, 5, 7, 8)]
 
 # Scale the features
 new_X_scaled = scaler.transform(new_X)

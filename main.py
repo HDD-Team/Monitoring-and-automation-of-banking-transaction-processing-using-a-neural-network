@@ -1,6 +1,5 @@
 import joblib
 import pandas as pd
-from sklearn.calibration import calibration_curve
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
@@ -44,8 +43,6 @@ model.fit(X_train_scaled, y_train)
 X_test_scaled = scaler.transform(X_test)
 y_pred = model.predict(X_test_scaled)
 
-proba = model.predict_proba(X_test_scaled)[:, 1]
-y_means, proba_means = calibration_curve(y, proba, n_bins=10, strategy='quantile')
 # Step 7: Save the model
 scaler = joblib.dump(scaler, 'scaler.pkl')
 model = joblib.dump(model, 'model.pkl')
