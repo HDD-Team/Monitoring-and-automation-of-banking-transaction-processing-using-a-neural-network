@@ -5,24 +5,33 @@ from flask import Flask, request, jsonify, render_template
 import subprocess as sp
 import os
 from sklearn.pipeline import Pipeline
+from sklearn.neural_network import MLPClassifier
 
 app = Flask(__name__)
 
 # Загрузите вашу модель при запуске сервера
 model = joblib.load('model_pipeline.pkl')
-print(os.path.join(os.path.dirname(__file__), 'templates', 'index.php'))
-@app.route('/', methods = ['GET','POST'])
+# Инициализируйте пустой DataFrame для хранения данных
+data = pd.DataFrame()
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
     index_php_path = os.path.join(os.path.dirname(__file__), 'templates', 'index.php')
     out = sp.run(["php", index_php_path], stdout=sp.PIPE)
     return out.stdout
+
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
+        global data
+
         # Получите данные из запроса
         new_data = request.get_json(force=True)
         # Преобразуйте данные в массив NumPy (или Pandas DataFrame), если это необходимо
-        data = pd.DataFrame(new_data)
+        new_data = pd.DataFrame(new_data)
+
+        # Обновите исходные данные
+        data = pd.concat([data, new_data], ignore_index=True)
 
         data['customer'] = data['customer'].astype(str)
         data['merchant'] = data['merchant'].astype(str)
@@ -42,21 +51,22 @@ def predict():
 
         # Прогнозирование меток вероятности
         new_y_pred_proba = model.predict_proba(X_scaled)
-        # Make predictions on the new dataset
+
         status = []
         prediction = []
         for row, prob in zip(data.iterrows(), new_y_pred_proba):
             prediction.append(prob)
-            if new_y_pred[row[0]] == 1:
-                if 0.5 <= prob <= 0.7:
+            if prob[1] == 1:
+                if 0.5 <= prob[0] <= 0.7:
                     status.append('FREEZE')
-                elif prob > 0.7:
+                elif prob[0] > 0.7:
                     status.append('STOP')
-            elif new_y_pred[row[0]] == 0:
+            elif prob[1] == 0:
                 status.append('SAFE')
-        print(status)
+
         # Отправьте результат обратно
         return jsonify({'status': status, 'prediction': prediction})
+
     except Exception as e:
         return jsonify({'error': str(e)})
 

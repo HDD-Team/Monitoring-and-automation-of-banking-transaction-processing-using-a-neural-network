@@ -1,4 +1,4 @@
-<?
+<?php
 
 if (isset($_GET['filter'])) {
     $filter2 = $_GET['filter'];
@@ -67,7 +67,7 @@ if (isset($_GET['stop'])) {
         <style>
             
             body {
-                background-image: url(background.jpg);
+                background-image: url("background.jpg");
                 background-repeat: repeat;
             }
             
@@ -236,13 +236,13 @@ if (isset($_GET['stop'])) {
             function change(fun, line) {
                 switch (fun) {
                     case "safe":
-                        window.location.href = "http://trans-monitor.000.pe/?filter=<? echo $filter2; ?>&safe="+line;
+                        window.location.href = "http://trans-monitor.000.pe/?filter=<?php echo $filter2; ?>&safe="+line;
                         break;
                     case "freeze":
-                        window.location.href = "http://trans-monitor.000.pe/?filter=<? echo $filter2; ?>&freeze="+line;
+                        window.location.href = "http://trans-monitor.000.pe/?filter=<?php echo $filter2; ?>&freeze="+line;
                         break;
                     case "stop":
-                        window.location.href = "http://trans-monitor.000.pe/?filter=<? echo $filter2; ?>&stop="+line;
+                        window.location.href = "http://trans-monitor.000.pe/?filter=<?php echo $filter2; ?>&stop="+line;
                         break;
                 }
             }
@@ -251,7 +251,7 @@ if (isset($_GET['stop'])) {
     </head>
     <body>
         <div id="head_block">
-            <a href="https://www.centrinvest.ru/"><img src="logo.svg" id="logo" /></a> <h1 id="head_text">МОНИТОРИНГ ТРАНЗАКЦИЙ</h1>
+            <a href="https://www.centrinvest.ru/"><img src="/logo.svg" id="logo" /></a> <h1 id="head_text">МОНИТОРИНГ ТРАНЗАКЦИЙ</h1>
         </div>
             <div id="sort">
             <form method="get" action="#">
@@ -295,7 +295,7 @@ if (isset($_GET['stop'])) {
                         Статус
                     </td>
                 </tr>
-                <?
+                <?php
                 
                 $gender = array("F"=>"Ж", "M"=>"М");
                 $age = array(0=>"до 19", 1=>"19-25", 2=>"26-35", 3=>"36-45", 4=>"46-55", 5=>"56-65", 6=>"65+");

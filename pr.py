@@ -53,5 +53,5 @@ df = pd.read_excel('output.xlsx')
 json_data = df.to_json(orient='records')
 
 # Save the JSON data to a file
-with open('output.json', 'w') as f:
+with open('templates/output.json', 'w') as f:
     f.write(json_data)
